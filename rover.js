@@ -1,3 +1,5 @@
+const Command = require("./command");
+
 class Rover {
   constructor(position, mode = "NORMAL", generatorWatts = 110) {
     // Write code here!
@@ -9,7 +11,7 @@ class Rover {
   receiveMessage(message) {
     let results = [];
     for (let command of message.commands) {
-      let result = this.executeCommand(command);
+      let result = this.performCommand(command);
       results.push(result);
     }
     return {
@@ -17,20 +19,29 @@ class Rover {
       results: results,
     };
   }
-  executeCommand(command) {
-    // maybe some logic for commands will go here
-    // let results array/object?
-    // let roverStatus check command
-    // let modeChange command
-    //
+
+  performCommand(command) {
+    // write some logic for commands here
+    let results = [];
+    //let statusCheckCommand = new Command("STATUS_CHECK");
+    if (command.commandType === "STATUS_CHECK") {
+      let roverStatus = {
+        mode: this.mode,
+        generatorWatts: this.generatorWatts,
+        position: this.position,
+      };
+      results.push({completed: true, roverStatus: roverStatus})
+    } else if (command.commandType === "MOVE") {
+      results.push({completed: true})
+    } else if (command.commandType === "MODE_CHANGE"){
+      results.push({completed: true})
+
+    }
+    return results;
   }
- 
 }
 
-
-
 module.exports = Rover;
-
 
 // Tip from Phillip
 
