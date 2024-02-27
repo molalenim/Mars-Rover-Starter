@@ -40,9 +40,12 @@ describe("Rover class", function () {
 
   // 10 tests here!
   test("responds correctly to the status check command", function () {
-    let commands = [new Command("STATUS_CHECK")]; //retrieves current status or the rover
-
-    let message = new Message("Test message with status check command", commands);
+    let commands = [new Command("STATUS_CHECK")]; //retrieves current status of the rover
+    let message = new Message(
+      "Test message with status check command",
+      commands
+    );
+    console.log("MESSAGE:", message);
     let rover = new Rover(98382);
     let response = rover.receiveMessage(message);
     let roverStatus = response.results[0].roverStatus;
@@ -66,10 +69,11 @@ describe("Rover class", function () {
     );
     let rover = new Rover(98382);
 
-    let response = rover.receiveMessage(message);
+    let response = rover.receiveMessage(message); // Check if the STATUS_CHECK command is found in the response
+
     let statusCheckResult = response.results.find(
       (result) => result.commandType === "STATUS_CHECK"
-    );
+    ); // state the rover status if STATUS_CHECK command is found
 
     if (statusCheckResult) {
       let roverStatus = statusCheckResult.roverStatus;
@@ -77,7 +81,8 @@ describe("Rover class", function () {
       expect(roverStatus.generatorWatts).toBe(110);
       expect(roverStatus.position).toBe(98382);
     } else {
-      console.log("STATUS_CHECK command not found in the message"); // if STATUS_CHECK command isn't completed
+      // handle if STATUS_CHECK command is not found
+      console.error("STATUS_CHECK command not found in the message");
     }
   });
 

@@ -12,7 +12,10 @@ describe("Command class", function () {
   });
 
   //Test 2: sets command type
-  test("constructor sets command type", function () {});
+  test("constructor sets command type", function () {
+    let command = new Command("MOVE");
+    expect(command.commandType).toBe("MOVE");
+  });
 
   // Test 3: sets command type and value passed in as the 2nd argument
   test("constructor sets a value passed in as the 2nd argument", function () {

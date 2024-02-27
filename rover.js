@@ -1,5 +1,6 @@
 const Command = require("./command");
 
+
 class Rover {
   constructor(position, mode = "NORMAL", generatorWatts = 110) {
     // Write code here!
@@ -9,6 +10,8 @@ class Rover {
   }
 
   receiveMessage(message) {
+    //console.log("RECEIVE MESSAGE:", message);
+
     let results = [];
     for (let command of message.commands) {
       let result = this.performCommand(command);
@@ -22,21 +25,26 @@ class Rover {
 
   performCommand(command) {
     // write some logic for commands here
-    let results = [];
+    let results;
     //let statusCheckCommand = new Command("STATUS_CHECK");
     if (command.commandType === "STATUS_CHECK") {
       let roverStatus = {
+        position: this.position,
         mode: this.mode,
         generatorWatts: this.generatorWatts,
-        position: this.position,
+        
       };
-      results.push({completed: true, roverStatus: roverStatus})
+      console.log("ROVER STATUS:", roverStatus);
+      results = {completed: true, roverStatus: roverStatus};
     } else if (command.commandType === "MOVE") {
-      results.push({completed: true})
+      results = {completed: true};
     } else if (command.commandType === "MODE_CHANGE"){
-      results.push({completed: true})
-
+      results = {completed: true};
+    
+    } else {
+      console.error(`Unknown command type: ${command.commandType}`);
     }
+    //console.log("RESULTS:", results);
     return results;
   }
 }
